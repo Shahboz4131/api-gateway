@@ -1,0 +1,244 @@
+definitions:
+  models.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  models.ListTasks:
+    properties:
+      tasks:
+        items:
+          $ref: '#/definitions/models.Task'
+        type: array
+    type: object
+  models.Overdue:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      timed:
+        type: string
+    type: object
+  models.StandardErrorModel:
+    properties:
+      error:
+        $ref: '#/definitions/models.Error'
+    type: object
+  models.Task:
+    properties:
+      assignee:
+        type: string
+      created_at:
+        type: string
+      deadline:
+        type: string
+      id:
+        type: string
+      status:
+        type: string
+      summary:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.UpdateTask:
+    properties:
+      assignee:
+        type: string
+      created_at:
+        type: string
+      deadline:
+        type: string
+      status:
+        type: string
+      summary:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/overduetasks:
+    get:
+      consumes:
+      - application/json
+      description: This API for getting list of overdue tasks
+      parameters:
+      - description: taskOverdueRequest
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Overdue'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: OverdueTasks
+      tags:
+      - task
+  /v1/tasks:
+    get:
+      consumes:
+      - application/json
+      description: This API for getting list of tasks
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ListTasks'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: ListTasks
+      tags:
+      - task
+  /v1/tasks/:
+    post:
+      consumes:
+      - application/json
+      description: This API for creating a new task
+      parameters:
+      - description: taskCreateRequest
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: CreateTask
+      tags:
+      - task
+  /v1/tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This API for deleting task
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: DeleteTask
+      tags:
+      - task
+    get:
+      consumes:
+      - application/json
+      description: This API for getting task detail
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: GetTask
+      tags:
+      - task
+    put:
+      consumes:
+      - application/json
+      description: This API for updating task
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: taskUpdateRequest
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateTask'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: UpdateTask
+      tags:
+      - task
+swagger: "2.0"
